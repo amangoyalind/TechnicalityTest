@@ -135,6 +135,19 @@ namespace TechnicalityTestWebApp.Controllers
             {
                 try
                 {
+                    // Call Credit Card API
+                    var vm = new Models.CCChargeViewModel
+                    {
+                        ChargeId = id,
+                        CustomerId = payment.CustomerId,
+                        Amount = payment.Amount
+                    };
+
+                    var chargeJson = JsonSerializer.Serialize(vm);
+                    var requestContent = new StringContent(chargeJson, Encoding.UTF8, "application/json");
+                    var url = _config["ApiUrl"] + "/CCCharge";
+                    var response = await _httpClient.PutAsync(url, requestContent);
+
                     _context.Update(payment);
                     await _context.SaveChangesAsync();
                 }
