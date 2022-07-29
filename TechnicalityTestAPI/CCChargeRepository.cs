@@ -41,6 +41,7 @@ namespace TechnicalityTestAPI
         {
             var ccc = _context.CreditCardCharges.Find(id);
             ccc.Amount = model.Amount;
+            ccc.ChargeDateTime = DateTime.Now;
             _context.SaveChanges();
         }
     }
