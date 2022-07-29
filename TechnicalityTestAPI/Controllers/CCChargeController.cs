@@ -11,12 +11,14 @@ namespace TechnicalityTestAPI.Controllers
     [Route("[controller]")]
     public class CCChargeController : ControllerBase
     {
-        
+
         private readonly ApiDbContext _context;
-        
-        public CCChargeController(ApiDbContext context)
+        ICCChargeService cCChargeService;
+
+        public CCChargeController(ApiDbContext context, ICCChargeService _cCChargeService)
         {
             _context = context;
+            cCChargeService = _cCChargeService;
         }
 
         [HttpGet]
@@ -31,16 +33,7 @@ namespace TechnicalityTestAPI.Controllers
         [HttpPost]
         public int CreateCCCharge(CCChargeViewModel model)
         {
-            var ccc = new CreditCardCharge();
-            ccc.CustomerId = model.CustomerId;
-            ccc.Amount = model.Amount;
-            ccc.ChargeDateTime = DateTime.UtcNow;
-
-            _context.CreditCardCharges.Add(ccc);
-            _context.SaveChanges();
-
-            return ccc.CreditCardChargeId;
-
+            return cCChargeService.CreateCCCharge(model.CustomerId, model.Amount);
         }
     }
 }
